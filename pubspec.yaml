@@ -51,6 +51,7 @@ flutter:
       windows:
         pluginClass: DigimazePdfReaderLauncherPluginCApi
         dartPluginClass: DigimazePdfReaderLauncherWindows
+        dartFileName: digimaze_pdf_reader_launcher_windows.dart
 
   # To add assets to your plugin package, add an assets section, like this:
   # assets:
