@@ -1,11 +1,11 @@
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:digimaze_pdf_reader_launcher/digimaze_pdf_reader_launcher_method_channel.dart';
+import 'package:digimaze_pdf_reader_launcher/digimaze_pdf_reader_launcher_android.dart';
 
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
 
-  MethodChannelDigimazePdfReaderLauncher platform = MethodChannelDigimazePdfReaderLauncher();
+  DigimazePdfReaderLauncherAndroid platform = DigimazePdfReaderLauncherAndroid();
   const MethodChannel channel = MethodChannel('digimaze_pdf_reader_launcher');
 
   setUp(() {

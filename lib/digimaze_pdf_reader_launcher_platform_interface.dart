@@ -1,6 +1,7 @@
-import 'package:digimaze_pdf_reader_launcher/digimaze_pdf_reader_launcher_android.dart';
 import 'package:digimaze_pdf_reader_launcher/models/dto/open_document_request.dart';
 import 'package:plugin_platform_interface/plugin_platform_interface.dart';
+
+class _DefaultUnimplementedPlatform extends DigimazePdfReaderLauncherPlatform {}
 
 abstract class DigimazePdfReaderLauncherPlatform extends PlatformInterface {
 
@@ -8,7 +9,7 @@ abstract class DigimazePdfReaderLauncherPlatform extends PlatformInterface {
 
   static final Object _token = Object();
 
-  static DigimazePdfReaderLauncherPlatform _instance = DigimazePdfReaderLauncherAndroid();
+  static DigimazePdfReaderLauncherPlatform _instance = _DefaultUnimplementedPlatform();
 
   static DigimazePdfReaderLauncherPlatform get instance => _instance;
 
