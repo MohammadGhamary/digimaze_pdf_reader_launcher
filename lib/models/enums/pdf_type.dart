@@ -1,0 +1,1 @@
+enum PdfType { sample, book, attachment }
