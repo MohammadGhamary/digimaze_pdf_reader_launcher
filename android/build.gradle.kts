@@ -1,6 +1,7 @@
 import org.gradle.api.JavaVersion
 import org.gradle.kotlin.dsl.configure
 import com.android.build.api.dsl.LibraryExtension
+import java.net.URL
 
 group = "com.vnegar.digimaze_pdf_reader_launcher"
 version = "1.0.0"
@@ -17,6 +18,37 @@ rootProject.allprojects {
             url = uri("https://pkgs.dev.azure.com/MicrosoftDeviceSDK/DuoSDK-Public/_packaging/Duo-SDK-Feed/maven/v1")
         }
     }
+}
+
+val libsDir = file("$projectDir/libs")
+
+val aarFilesToDownload = mapOf(
+    "FoxitRDK.aar" to "https://files.digimaze.org/FoxitRDK.aar",
+    "FoxitRDKUIExtensions.aar" to "https://files.digimaze.org/FoxitRDKUIExtensions.aar"
+)
+
+val downloadAarFiles by tasks.registering {
+    doLast {
+        libsDir.mkdirs()
+        aarFilesToDownload.forEach { (fileName, url) ->
+            val target = File(libsDir, fileName)
+            if (!target.exists()) {
+                println("Downloading $fileName ...")
+                URL(url).openStream().use { input ->
+                    target.outputStream().use { output ->
+                        input.copyTo(output)
+                    }
+                }
+                println("Downloaded $fileName (${target.length() / 1024 / 1024} MB)")
+            } else {
+                println("$fileName already exists, skipping download.")
+            }
+        }
+    }
+}
+
+tasks.named("preBuild") {
+    dependsOn(downloadAarFiles)
 }
 
 extensions.configure<LibraryExtension> {
