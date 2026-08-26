@@ -26,10 +26,9 @@ void main() {
   });
 
   test('getPlatformVersion', () async {
-    DigimazePdfReaderLauncher digimazePdfReaderLauncherPlugin = DigimazePdfReaderLauncher();
     MockDigimazePdfReaderLauncherPlatform fakePlatform = MockDigimazePdfReaderLauncherPlatform();
     DigimazePdfReaderLauncherPlatform.instance = fakePlatform;
 
-    expect(await digimazePdfReaderLauncherPlugin.getPlatformVersion(), '42');
+    expect(await DigimazePdfReaderLauncher.getPlatformVersion(), '42');
   });
 }

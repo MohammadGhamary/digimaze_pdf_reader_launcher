@@ -26,7 +26,6 @@ class DigimazePdfReaderLauncherWindows extends DigimazePdfReaderLauncherPlatform
         case PdfReaderType.advanced:
           {
             final String secureParams = await EncryptionService.generateAdvancedPdfReaderParams(request);
-            print(secureParams);
             final exeDir = File(Platform.resolvedExecutable).parent;
             await Process.run('digimaze_pdf_reader_tauri.exe', ['--params', secureParams], workingDirectory: exeDir.path);
             break;
