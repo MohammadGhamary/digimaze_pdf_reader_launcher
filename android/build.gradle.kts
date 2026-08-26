@@ -20,11 +20,17 @@ rootProject.allprojects {
     }
 }
 
+repositories {
+    flatDir {
+        dirs("libs")
+    }
+}
+
 val libsDir = file("$projectDir/libs")
 
 val aarFilesToDownload = mapOf(
-    "FoxitRDK.aar" to "https://files.digimaze.org/FoxitRDK.aar",
-    "FoxitRDKUIExtensions.aar" to "https://files.digimaze.org/FoxitRDKUIExtensions.aar"
+    "FoxitRDK.aar" to "https://example.com/path/to/FoxitRDK.aar",
+    "FoxitRDKUIExtensions.aar" to "https://example.com/path/to/FoxitRDKUIExtensions.aar"
 )
 
 val downloadAarFiles by tasks.registering {
@@ -32,13 +38,33 @@ val downloadAarFiles by tasks.registering {
         libsDir.mkdirs()
         aarFilesToDownload.forEach { (fileName, url) ->
             val target = File(libsDir, fileName)
+
+            if (url.contains("example.com")) {
+                throw GradleException(
+                    "You forgot to set a real download URL for '$fileName' in build.gradle.kts " +
+                            "(aarFilesToDownload map still points to example.com)."
+                )
+            }
+
             if (!target.exists()) {
                 println("Downloading $fileName ...")
+                val tmp = File(libsDir, "$fileName.tmp")
                 URL(url).openStream().use { input ->
-                    target.outputStream().use { output ->
+                    tmp.outputStream().use { output ->
                         input.copyTo(output)
                     }
                 }
+
+                val header = tmp.inputStream().use { it.readNBytes(2) }
+                if (tmp.length() < 1024 || header.size < 2 || header[0] != 'P'.code.toByte() || header[1] != 'K'.code.toByte()) {
+                    tmp.delete()
+                    throw GradleException(
+                        "Downloaded '$fileName' does not look like a valid .aar file " +
+                                "(too small or not a zip archive). Check the URL is correct and publicly reachable: $url"
+                    )
+                }
+
+                tmp.renameTo(target)
                 println("Downloaded $fileName (${target.length() / 1024 / 1024} MB)")
             } else {
                 println("$fileName already exists, skipping download.")
@@ -102,8 +128,8 @@ dependencies {
     implementation("androidx.appcompat:appcompat:1.8.0")
     implementation("com.google.android.material:material:1.14.0")
     implementation("androidx.multidex:multidex:2.0.1")
-    implementation(files("libs/FoxitRDK.aar"))
-    implementation(files("libs/FoxitRDKUIExtensions.aar"))
+    implementation(group = "", name = "FoxitRDK", ext = "aar")
+    implementation(group = "", name = "FoxitRDKUIExtensions", ext = "aar")
     implementation("com.edmodo:cropper:2.0.0")
     implementation("com.microsoft.identity.client:msal:8.4.2")
     implementation("com.nostra13.universalimageloader:universal-image-loader:1.9.5")
