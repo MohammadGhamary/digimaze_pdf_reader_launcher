@@ -96,11 +96,11 @@ class EncryptionService {
           '$secretæ'
           'book';
 
-      String? encryptedParams = await _encryptText(finalSecret, raw);
+      encryptedParams = await _encryptText(finalSecret, raw);
       encryptedParams = encryptedParams!.insertAt(14, finalSecret);
     }
 
-    return base64.encode(utf8.encode(encryptedParams!));
+    return base64.encode(utf8.encode(encryptedParams));
   }
 
   static Future<String> generateClassicPdfReaderParams(
@@ -174,9 +174,9 @@ class EncryptionService {
     SdkLicense lic,
   ) async {
     final results = await Future.wait([
-      _encryptText(secret, lic.encryptionKey),
-      _encryptText(secret, lic.key),
-      _encryptText(secret, lic.serialNumber),
+      _encryptText(secret, lic.encryptionKey).catchError((_) => ""),
+      _encryptText(secret, lic.key).catchError((_) => ""),
+      _encryptText(secret, lic.serialNumber).catchError((_) => ""),
     ]);
 
     final encKey = results[0] ?? "";
@@ -195,24 +195,25 @@ class EncryptionService {
   static Future<String?> _encryptText(String key, String text) async {
     try {
       final algorithm = AesCbc.with256bits(macAlgorithm: MacAlgorithm.empty);
-      final keyString = _utf8ToHex(key);
-      final keyBytes = utf8.encode(keyString);
-      final ivString = _utf8ToHex(key.substring(0, 4), havePadding: true);
-      final ivBytes = utf8.encode(ivString);
+
+      final keyBytes = base64Url.decode(key);
+      if (keyBytes.length != 32) {
+        throw ArgumentError('Key must decode to 32 bytes, got ${keyBytes.length}');
+      }
       final secretKey = await algorithm.newSecretKeyFromBytes(keyBytes);
-      final clear = await algorithm.encrypt(
+
+      final nonce = algorithm.newNonce();
+
+      final secretBox = await algorithm.encrypt(
         utf8.encode(text),
         secretKey: secretKey,
-        nonce: ivBytes,
+        nonce: nonce,
       );
 
-      final string = const Base64Encoder().convert(clear.cipherText);
-      if (string.isEmpty) {
-        return null;
-      } else {
-        return string;
-      }
+      final combined = <int>[...nonce, ...secretBox.cipherText];
+      return base64.encode(combined);
     } catch (e) {
+      print('Encryption error: $e');
       return null;
     }
   }
