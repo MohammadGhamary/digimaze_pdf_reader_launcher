@@ -10,6 +10,10 @@ plugins {
     id("com.android.library")
 }
 
+// Captured now (while `projectDir` still refers to THIS plugin project) so that when this
+// block runs for other subprojects (like :app), it still points at the plugin's own libs/ folder.
+val pluginLibsDir = file("$projectDir/libs")
+
 rootProject.allprojects {
     repositories {
         google()
@@ -17,15 +21,20 @@ rootProject.allprojects {
         maven {
             url = uri("https://pkgs.dev.azure.com/MicrosoftDeviceSDK/DuoSDK-Public/_packaging/Duo-SDK-Feed/maven/v1")
         }
+        // Local aar files must be resolved through a flatDir repository (module dependency),
+        // NOT via implementation(files(...)) - AGP rejects direct local .aar file dependencies
+        // when this module itself is built as an AAR. This repo must be visible to every
+        // project (including :app), because :app needs to resolve this transitively too.
+        flatDir {
+            dirs(pluginLibsDir)
+        }
     }
 }
 
-repositories {
-    flatDir {
-        dirs("libs")
-    }
-}
-
+// -----------------------------------------------------------------
+// Auto-download large .aar files that are excluded from git (too big for repo)
+// Put your real hosting URLs below (GitHub Release asset, S3, your own server, etc).
+// -----------------------------------------------------------------
 val libsDir = file("$projectDir/libs")
 
 val aarFilesToDownload = mapOf(
@@ -55,6 +64,8 @@ val downloadAarFiles by tasks.registering {
                     }
                 }
 
+                // An .aar is a zip file - a valid one always starts with the bytes "PK".
+                // Catches HTML error pages / empty responses saved by mistake as if they were the real file.
                 val header = tmp.inputStream().use { it.readNBytes(2) }
                 if (tmp.length() < 1024 || header.size < 2 || header[0] != 'P'.code.toByte() || header[1] != 'K'.code.toByte()) {
                     tmp.delete()
@@ -73,6 +84,7 @@ val downloadAarFiles by tasks.registering {
     }
 }
 
+// Make sure the aar files exist before Gradle tries to resolve dependencies
 tasks.named("preBuild") {
     dependsOn(downloadAarFiles)
 }
