@@ -136,23 +136,12 @@ public class PDFReaderActivity extends FragmentActivity {
             return;
         }
 
-        String pathE = bundle.getString("path", "");
-        int bookId = bundle.getInt("bookId", 0);
-        String bookCategory = bundle.getString("bookCategory", "");
+        PDFParams params = (PDFParams) getIntent().getSerializableExtra("pdf_params");
 
-        String bookTitle = bundle.getString("bookTitle", "");
-        String bookName = bundle.getString("bookName", "");
+        //PositionObfuscator obfuscator = new PositionObfuscator(decryptedObfuscatorKey, /* base64EncodeOutput = */ true);
 
-        String decryptedObfuscatorKey = ObfuscationUtil.decrypt(bookName, bookTitle, bookId);
-        if (decryptedObfuscatorKey == null) {
-            decryptedObfuscatorKey = "";
-        }
-
-        String path = ObfuscationUtil.decrypt(pathE, bookTitle, bookId);
-        PositionObfuscator obfuscator = new PositionObfuscator(decryptedObfuscatorKey, /* base64EncodeOutput = */ true);
-        String decryptedCategory = ObfuscationUtil.decrypt(bookCategory, bookTitle, bookId);
-
-        uiextensionsManager.openDocument(path, obfuscator.deobfuscate(decryptedCategory).getBytes());
+        assert params != null;
+        uiextensionsManager.openDocument(params.getFilePath(), params.getPassword().getBytes());
     }
 
     @Override

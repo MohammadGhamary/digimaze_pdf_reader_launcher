@@ -4,7 +4,7 @@ class PdfSource {
   final int bookId;
   final String? attachmentId;
   final String title;
-  final String filePath;
+  String filePath;
   final String? password;
   final Function? onDocumentClosed;
   final PdfType type;

@@ -1,6 +1,12 @@
 package com.vnegar.digimaze_pdf_reader_launcher;
 
-public class PDFParams {
+import java.io.Serial;
+import java.io.Serializable;
+
+public class PDFParams implements Serializable {
+    @Serial
+    private static final long serialVersionUID = 1L;
+
     private String deviceUID;
     private String userAuthToken;
     private String logApiUrl;
@@ -12,33 +18,7 @@ public class PDFParams {
     private String title;
     private String licSn;
     private String licKey;
-
-    public PDFParams(String deviceUID, String userAuthToken, String logApiUrl, String appVersion,
-                     String bookId, boolean isMobile, String type, String filePath,
-                     String title, String password, String licSn, String licKey) {
-        this.deviceUID = deviceUID;
-        this.userAuthToken = userAuthToken;
-        this.logApiUrl = logApiUrl;
-        this.appVersion = appVersion;
-        this.bookId = bookId;
-        this.isMobile = isMobile;
-        this.type = type;
-        this.filePath = filePath;
-        this.title = title;
-        this.licSn = licSn;
-        this.licKey = licKey;
-    }
-
-    public PDFParams(String bookId, boolean isMobile, String type, String filePath,
-                     String title, String licSn, String licKey) {
-        this.bookId = bookId;
-        this.isMobile = isMobile;
-        this.type = type;
-        this.filePath = filePath;
-        this.title = title;
-        this.licSn = licSn;
-        this.licKey = licKey;
-    }
+    private String password;
 
     public String getDeviceUID() {
         return deviceUID;
@@ -126,5 +106,13 @@ public class PDFParams {
 
     public void setLicKey(String licKey) {
         this.licKey = licKey;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 }
