@@ -29,8 +29,8 @@ repositories {
 val libsDir = file("$projectDir/libs")
 
 val aarFilesToDownload = mapOf(
-    "FoxitRDK.aar" to "https://example.com/path/to/FoxitRDK.aar",
-    "FoxitRDKUIExtensions.aar" to "https://example.com/path/to/FoxitRDKUIExtensions.aar"
+    "FoxitRDK.aar" to "https://files.digimaze.org/FoxitRDK.aar",
+    "FoxitRDKUIExtensions.aar" to "https://files.digimaze.org/FoxitRDKUIExtensions.aar"
 )
 
 val downloadAarFiles by tasks.registering {
