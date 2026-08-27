@@ -1,8 +1,5 @@
 package com.vnegar.digimaze_pdf_reader_launcher;
 
-import static androidx.core.content.ContextCompat.startActivity;
-import static com.foxit.uiextensions.utils.AppUtil.getApplicationContext;
-
 import android.app.Activity;
 import android.app.Application;
 import android.content.Intent;
@@ -61,9 +58,9 @@ public class DigimazePdfReaderLauncherPlugin implements FlutterPlugin, MethodCal
                 }
 
                 File file = new File(path);
-                String packageName = getApplicationContext().getPackageName();
+                String packageName = activity.getPackageName();
                 Uri uri = FileProvider.getUriForFile(
-                        getApplicationContext(),
+                        activity.getApplicationContext(),
                         packageName + ".fileProvider",
                         file
                 );
@@ -88,9 +85,9 @@ public class DigimazePdfReaderLauncherPlugin implements FlutterPlugin, MethodCal
                 }
 
                 File file = new File(path);
-                String packageName = getApplicationContext().getPackageName();
+                String packageName = activity.getPackageName();
                 Uri uri = FileProvider.getUriForFile(
-                        getApplicationContext(),
+                        activity.getApplicationContext(),
                         packageName + ".fileProvider",
                         file
                 );
