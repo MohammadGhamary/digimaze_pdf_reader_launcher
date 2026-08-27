@@ -96,7 +96,7 @@ public final class EncryptionService {
             throw new IllegalArgumentException("Encryption key must be exactly 32 characters");
         }
 
-        final String hardCodedSalt = "674160672d7993de2361867af0286936";
+        final String hardCodedSalt = "fb0dae6afae2a731bf1398759c4e6567";
         final int iterations = 100_000;
 
         SecretKeyFactory skf = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA256");

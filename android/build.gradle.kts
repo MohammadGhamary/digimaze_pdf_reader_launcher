@@ -98,7 +98,7 @@ extensions.configure<LibraryExtension> {
         minSdk = 26
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 
-        @Suppress("UnstableApiUsage")
+        /*@Suppress("UnstableApiUsage")
         externalNativeBuild {
             cmake {
                 cppFlags("-std=c++17")
@@ -107,14 +107,14 @@ extensions.configure<LibraryExtension> {
         }
         ndk {
             abiFilters += listOf("armeabi-v7a", "arm64-v8a", "x86_64")
-        }
+        }*/
     }
 
-    externalNativeBuild {
+    /*externalNativeBuild {
         cmake {
             path = file("src/main/cpp/CMakeLists.txt")
         }
-    }
+    }*/
 
     buildTypes {
         release {

@@ -8,19 +8,11 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.view.WindowManager;
-import android.content.Context;
-
 import androidx.annotation.NonNull;
 import androidx.core.content.FileProvider;
-
 import com.foxit.sdk.common.Constants;
 import com.foxit.sdk.common.Library;
-
-import org.json.JSONObject;
-
 import java.io.File;
-import java.util.HashMap;
-
 import io.flutter.embedding.engine.plugins.FlutterPlugin;
 import io.flutter.embedding.engine.plugins.activity.ActivityAware;
 import io.flutter.embedding.engine.plugins.activity.ActivityPluginBinding;
@@ -74,7 +66,6 @@ public class DigimazePdfReaderLauncherPlugin implements FlutterPlugin, MethodCal
             case "openDocumentWithClassicPdfReader":
                 openDocument(call, result);
                 break;
-
             case "openDocumentWithAdvancedPdfReader": {
                 String params = call.argument("params");
                 String path = call.argument("path");
