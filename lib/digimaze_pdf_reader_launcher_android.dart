@@ -58,13 +58,13 @@ class DigimazePdfReaderLauncherAndroid
               }
             });
 
-            final String secureParams =
-                await EncryptionService.generateAdvancedPdfReaderParams(
-                  request,
-                );
-            methodChannel.invokeMethod('openDocumentWithClassicPdfReader', {
-              'params': secureParams,
-            });
+            final String? secureParams = await EncryptionService.generateClassicPdfReaderParams(request);
+
+            if(secureParams != null) {
+              methodChannel.invokeMethod('openDocumentWithClassicPdfReader', {
+                'params': secureParams,
+              });
+            }
           }
       }
 

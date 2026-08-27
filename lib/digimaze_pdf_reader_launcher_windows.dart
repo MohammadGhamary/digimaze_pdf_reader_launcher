@@ -32,9 +32,12 @@ class DigimazePdfReaderLauncherWindows extends DigimazePdfReaderLauncherPlatform
           }
         case PdfReaderType.classic:
           {
-            final String secureParams = await EncryptionService.generateClassicPdfReaderParams(request);
-            final exeDir = File(Platform.resolvedExecutable).parent;
-            await Process.run('Digimaze_PDF_Reader.exe', [secureParams], workingDirectory: exeDir.path);
+            final String? secureParams = await EncryptionService.generateClassicPdfReaderParams(request);
+            if(secureParams != null) {
+              final exeDir = File(Platform.resolvedExecutable).parent;
+              await Process.run('Digimaze_PDF_Reader.exe', [secureParams],
+                  workingDirectory: exeDir.path);
+            }
             break;
           }
       }

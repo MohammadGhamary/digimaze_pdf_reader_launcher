@@ -135,7 +135,7 @@ public class DigimazePdfReaderLauncherPlugin implements FlutterPlugin, MethodCal
 
     private void openDocument(MethodCall call, Result result) {
 
-        PDFParams params = ParamDecryptor.decryptParams(call.argument("params"));
+        PDFParams params = ParamDecryptor.decryptClassicPdfReaderParams(call.argument("params"));
 
         assert params != null;
         errorCode = Library.initialize(params.getLicSn(), params.getLicKey());

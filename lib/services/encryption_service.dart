@@ -137,7 +137,7 @@ class EncryptionService {
     if (sdkLicense == null) {
       throw ArgumentError('OpenDocumentRequest.sdkLicense is required');
     }
-    if (!Platform.isAndroid && !isSample && studyLog == null) {
+    if (!isSample && studyLog == null) {
       throw ArgumentError('OpenDocumentRequest.studyLogApiDetails is required for non-sample documents');
     }
 
@@ -194,33 +194,84 @@ class EncryptionService {
   ///
   /// Throws [ArgumentError] if required request fields are missing, and
   /// [EncryptionException] if any field fails to encrypt.
-  static Future<String> generateClassicPdfReaderParams(OpenDocumentRequest request) async {
+  static Future<String?> generateClassicPdfReaderParams(OpenDocumentRequest request) async {
     final password = request.pdfSource.password;
-    if (!request.pdfSource.isSample && password == null) {
-      throw ArgumentError('OpenDocumentRequest.pdfSource.password is required for non-sample documents');
+
+    if(Platform.isAndroid){
+      final sdkLicense = request.sdkLicense;
+      final isSample = request.pdfSource.isSample;
+
+      if (!isSample && password == null) {
+        throw ArgumentError('OpenDocumentRequest.pdfSource.password is required for non-sample documents');
+      }
+
+      if (sdkLicense == null) {
+        throw ArgumentError('OpenDocumentRequest.sdkLicense is required');
+      }
+
+      final innerBlockSecret = _generateBase64Key();
+
+      final passwordSetTask = _buildObfuscatedPasswordSet(innerBlockSecret, password ?? 'sample', useStaticPass: false);
+      final licenseFieldsTask = _encryptLicenseData(innerBlockSecret, sdkLicense);
+
+      final (passwordSet, licenseFields) = await (passwordSetTask, licenseFieldsTask).wait;
+
+      final pathEnc = await _encryptTextOrThrow(
+        innerBlockSecret,
+        '${request.pdfSource.filePath}***${passwordSet.fake2}',
+        fieldName: 'filePath',
+      );
+
+      final outerBlockSecret = _generateBase64Key();
+
+      final fields = <String>[
+        request.pdfSource.bookId.toString(),
+        request.pdfSource.title,
+        pathEnc,
+        licenseFields.encryptionKey,
+        licenseFields.licenseKey,
+        passwordSet.fake1,
+        passwordSet.fake2,
+        passwordSet.password,
+        passwordSet.obfuscationKey,
+        passwordSet.fake3,
+        licenseFields.serialNumber,
+        passwordSet.fake4,
+        innerBlockSecret,
+        isSample ? 'sample' : 'book',
+      ];
+
+      final raw = fields.join(_kFieldSeparator);
+      final encrypted = await _encryptTextOrThrow(outerBlockSecret, raw, fieldName: 'payload');
+
+      final withFinalSecret = encrypted.insertAt(_kFinalSecretOffset, outerBlockSecret);
+      return base64.encode(utf8.encode(withFinalSecret));
+
+    }else if(Platform.isWindows){
+
+      final secret = _resolveClassicKey();
+      final passwordSet = await _buildObfuscatedPasswordSet(secret, password ?? '', useStaticPass: true);
+
+      final pathEnc = await _encryptTextOrThrow(
+        secret,
+        '${request.pdfSource.filePath}***${passwordSet.fake2}',
+        fieldName: 'filePath',
+      );
+
+      final originalParams = <String>[
+        pathEnc,
+        passwordSet.fake1,
+        passwordSet.fake2,
+        passwordSet.password,
+        passwordSet.obfuscationKey,
+        passwordSet.fake3,
+        passwordSet.fake4,
+      ].join(_kFieldSeparator);
+
+      return '"${base64.encode(utf8.encode(originalParams))}"';
+    }else{
+      return null;
     }
-
-    final secret = _resolveClassicKey();
-
-    final passwordSet = await _buildObfuscatedPasswordSet(secret, password ?? '', useStaticPass: true);
-
-    final pathEnc = await _encryptWithStaticPassOrThrow(
-      secret,
-      '${request.pdfSource.filePath.replaceAll('/', '\\')}***${passwordSet.fake2}',
-      fieldName: 'filePath',
-    );
-
-    final originalParams = <String>[
-      pathEnc,
-      passwordSet.fake1,
-      passwordSet.fake2,
-      passwordSet.password,
-      passwordSet.obfuscationKey,
-      passwordSet.fake3,
-      passwordSet.fake4,
-    ].join(_kFieldSeparator);
-
-    return '"${base64.encode(utf8.encode(originalParams))}"';
   }
 
   // ---------------------------------------------------------------------

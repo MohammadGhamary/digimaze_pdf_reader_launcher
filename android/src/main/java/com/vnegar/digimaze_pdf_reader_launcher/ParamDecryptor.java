@@ -10,8 +10,7 @@ import java.util.Base64;
 import java.util.List;
 
 public class ParamDecryptor {
-
-    public static PDFParams decryptParams(String params) {
+    public static PDFParams decryptClassicPdfReaderParams(String params) {
         try {
             // 1. Base64 decode input
             byte[] bytes = Base64.getDecoder().decode(params);
@@ -36,9 +35,9 @@ public class ParamDecryptor {
             String innerEncKey = !argumentsArray.isEmpty() ? argumentsArray.remove(argumentsArray.size() - 1) : "";
 
             // Decrypt license intermediate keys
-            String licEncKey = decryptTextWithPassword(argumentsArray.get(isSample ? 3 : 7), innerEncKey);
-            String sdkSnEnc = decryptTextWithPassword(argumentsArray.get(isSample ? 10 : 14), innerEncKey);
-            String sdkKeyEnc = decryptTextWithPassword(argumentsArray.get(isSample ? 4 : 8), innerEncKey);
+            String licEncKey = decryptTextWithPassword(argumentsArray.get(3), innerEncKey);
+            String sdkSnEnc = decryptTextWithPassword(argumentsArray.get(10), innerEncKey);
+            String sdkKeyEnc = decryptTextWithPassword(argumentsArray.get(4), innerEncKey);
 
             // Decrypt license components
             assert licEncKey != null;
@@ -51,24 +50,20 @@ public class ParamDecryptor {
 
             switch (type) {
                 case "book": {
-                    result.setAppVersion(argumentsArray.get(0));
-                    result.setLogApiUrl(argumentsArray.get(1));
-                    result.setDeviceUID(argumentsArray.get(2));
-                    result.setBookId(argumentsArray.get(3));
-                    result.setTitle(argumentsArray.get(4));
-                    result.setUserAuthToken(argumentsArray.get(5));
+                    result.setBookId(argumentsArray.get(0));
+                    result.setTitle(argumentsArray.get(1));
 
-                    String pathAndPass = decryptTextWithPassword(argumentsArray.get(6), innerEncKey);
+                    String pathAndPass = decryptTextWithPassword(argumentsArray.get(2), innerEncKey);
                     assert pathAndPass != null;
                     result.setFilePath(pathAndPass.contains("***") ? pathAndPass.split("\\*\\*\\*")[0] : pathAndPass);
 
+                    decryptTextWithPassword(argumentsArray.get(5), innerEncKey);
+                    decryptTextWithPassword(argumentsArray.get(6), innerEncKey);
                     decryptTextWithPassword(argumentsArray.get(9), innerEncKey);
-                    decryptTextWithPassword(argumentsArray.get(10), innerEncKey);
-                    decryptTextWithPassword(argumentsArray.get(13), innerEncKey);
-                    decryptTextWithPassword(argumentsArray.get(15), innerEncKey);
+                    decryptTextWithPassword(argumentsArray.get(11), innerEncKey);
 
-                    String password = decryptTextWithPassword(argumentsArray.get(11), innerEncKey);
-                    String key = decryptTextWithPassword(argumentsArray.get(12), innerEncKey);
+                    String password = decryptTextWithPassword(argumentsArray.get(7), innerEncKey);
+                    String key = decryptTextWithPassword(argumentsArray.get(8), innerEncKey);
 
                     PositionObfuscator obfuscator = new PositionObfuscator(key, true);
 
