@@ -31,10 +31,14 @@ class DigimazePdfReaderLauncherAndroid
       switch (request.pdfReaderType) {
         case PdfReaderType.advanced:
           {
+            print("request.pdfSource.filePath: ${request.pdfSource.filePath}");
+
             final String targetPath = await methodChannel.invokeMethod(
               'getFileContentUri',
               {"path": request.pdfSource.filePath},
             );
+
+            print("targetPath: $targetPath");
 
             request.pdfSource.filePath = targetPath;
 
@@ -42,6 +46,7 @@ class DigimazePdfReaderLauncherAndroid
             await EncryptionService.generateAdvancedPdfReaderParams(
               request,
             );
+
             methodChannel.invokeMethod('openDocumentWithAdvancedPdfReader', {
               'params': secureParams,
               'path': targetPath
