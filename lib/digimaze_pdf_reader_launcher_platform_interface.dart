@@ -22,7 +22,7 @@ abstract class DigimazePdfReaderLauncherPlatform extends PlatformInterface {
     throw UnimplementedError('platformVersion() has not been implemented.');
   }
 
-  Future<void> openDocument({required OpenDocumentRequest request}) async {
-    await _instance.openDocument(request: request);
+  Future<void> openDocument({required OpenDocumentRequest request}) {
+    throw UnimplementedError('openDocument() has not been implemented.');
   }
 }
