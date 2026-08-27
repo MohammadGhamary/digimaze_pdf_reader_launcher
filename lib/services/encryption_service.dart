@@ -395,7 +395,6 @@ class EncryptionService {
   /// future protocol version instead.
   static Future<String?> _encryptWithStaticPass(String key, String text) async {
     try {
-      print(text);
       final algorithm = AesCbc.with256bits(macAlgorithm: MacAlgorithm.empty);
       final keyBytes = utf8.encode(_utf8ToHex(key));
       final ivBytes = utf8.encode(_utf8ToHex(key.substring(0, 4), havePadding: true));
