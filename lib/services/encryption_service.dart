@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:developer' as developer;
+import 'dart:io';
 import 'dart:math';
 import 'dart:typed_data';
 
@@ -136,7 +137,7 @@ class EncryptionService {
     if (sdkLicense == null) {
       throw ArgumentError('OpenDocumentRequest.sdkLicense is required');
     }
-    if (!isSample && studyLog == null) {
+    if (!Platform.isAndroid && !isSample && studyLog == null) {
       throw ArgumentError('OpenDocumentRequest.studyLogApiDetails is required for non-sample documents');
     }
 
