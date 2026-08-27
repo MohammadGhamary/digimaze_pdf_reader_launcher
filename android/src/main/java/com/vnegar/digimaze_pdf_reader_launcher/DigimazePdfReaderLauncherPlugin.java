@@ -104,7 +104,7 @@ public class DigimazePdfReaderLauncherPlugin implements FlutterPlugin, MethodCal
 
                 try {
                     isAdvancedPdfReaderOpened = true;
-                    getApplicationContext().startActivity(intent);
+                    activity.startActivity(intent);
                     result.success(null);
                 } catch (Exception e) {
                     result.error("INTENT_ERROR", e.getMessage(), null);
