@@ -39,8 +39,8 @@ class DigimazePdfReaderLauncherWindows extends DigimazePdfReaderLauncherPlatform
           }
       }
 
-      if (request.pdfSource.onDocumentClosed != null) {
-        await request.pdfSource.onDocumentClosed!();
+      if (request.onDocumentClosed != null) {
+        await request.onDocumentClosed!();
       }
     } catch (e) {
       debugPrint("Windows Advanced Process Error: $e");
