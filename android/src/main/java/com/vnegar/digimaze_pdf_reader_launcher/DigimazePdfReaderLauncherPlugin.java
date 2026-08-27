@@ -84,17 +84,9 @@ public class DigimazePdfReaderLauncherPlugin implements FlutterPlugin, MethodCal
                     return;
                 }
 
-                File file = new File(path);
-                String packageName = activity.getPackageName();
-                Uri uri = FileProvider.getUriForFile(
-                        activity.getApplicationContext(),
-                        packageName + ".fileProvider",
-                        file
-                );
-
                 Intent intent = new Intent();
                 intent.setAction("com.vnegar.digimaze.OPEN_BOOK");
-                intent.setDataAndType(uri, "application/pdf");
+                intent.setDataAndType(Uri.parse(path), "application/pdf");
                 intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
                 intent.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
                 intent.putExtra("params", params);
