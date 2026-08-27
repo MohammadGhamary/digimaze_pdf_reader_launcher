@@ -42,6 +42,8 @@ flutter:
       android:
         package: com.vnegar.digimaze_pdf_reader_launcher
         pluginClass: DigimazePdfReaderLauncherPlugin
+        dartPluginClass: DigimazePdfReaderLauncherAndroid
+        dartFileName: digimaze_pdf_reader_launcher_android.dart
       ios:
         pluginClass: DigimazePdfReaderLauncherPlugin
       linux:

@@ -6,10 +6,13 @@ import 'digimaze_pdf_reader_launcher_platform_interface.dart';
 import 'models/dto/open_document_request.dart';
 import 'models/enums/pdf_reader_type.dart';
 
-/// An implementation of [DigimazePdfReaderLauncherPlatform] that uses method channels.
 class DigimazePdfReaderLauncherAndroid
     extends DigimazePdfReaderLauncherPlatform {
-  /// The method channel used to interact with the native platform.
+
+  static void registerWith() {
+    DigimazePdfReaderLauncherPlatform.instance = DigimazePdfReaderLauncherAndroid();
+  }
+
   @visibleForTesting
   final methodChannel = const MethodChannel('digimaze_pdf_reader_launcher');
 
