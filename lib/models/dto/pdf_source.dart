@@ -6,7 +6,6 @@ class PdfSource {
   final String title;
   String filePath;
   final String? password;
-  final Function? onDocumentClosed;
   final PdfType type;
 
   PdfSource.book({
@@ -14,7 +13,6 @@ class PdfSource {
     required this.title,
     required this.filePath,
     required this.password,
-    this.onDocumentClosed,
   }) : type = PdfType.book,
        attachmentId = null;
 
@@ -24,7 +22,6 @@ class PdfSource {
     required this.title,
     required this.filePath,
     required this.password,
-    this.onDocumentClosed,
   }) : type = PdfType.attachment;
 
   PdfSource.sample({
@@ -32,7 +29,6 @@ class PdfSource {
     required this.title,
     required this.filePath,
     this.password,
-    this.onDocumentClosed,
   }) : type = PdfType.sample,
        attachmentId = null;
 

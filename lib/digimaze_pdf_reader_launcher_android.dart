@@ -52,8 +52,8 @@ class DigimazePdfReaderLauncherAndroid
           {
             methodChannel.setMethodCallHandler((call) async {
               if (call.method == "documentClosed") {
-                if (request.pdfSource.onDocumentClosed != null) {
-                  await request.pdfSource.onDocumentClosed!();
+                if (request.onDocumentClosed != null) {
+                  await request.onDocumentClosed!();
                 }
               }
             });
@@ -68,8 +68,8 @@ class DigimazePdfReaderLauncherAndroid
           }
       }
 
-      if (request.pdfSource.onDocumentClosed != null) {
-        await request.pdfSource.onDocumentClosed!();
+      if (request.onDocumentClosed != null) {
+        await request.onDocumentClosed!();
       }
     } catch (e) {
       debugPrint("Windows Advanced Process Error: $e");
