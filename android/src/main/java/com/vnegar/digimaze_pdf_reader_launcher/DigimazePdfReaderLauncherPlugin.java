@@ -12,7 +12,12 @@ import androidx.annotation.NonNull;
 import androidx.core.content.FileProvider;
 import com.foxit.sdk.common.Constants;
 import com.foxit.sdk.common.Library;
+
+import org.json.JSONObject;
+
 import java.io.File;
+import java.util.HashMap;
+
 import io.flutter.embedding.engine.plugins.FlutterPlugin;
 import io.flutter.embedding.engine.plugins.activity.ActivityAware;
 import io.flutter.embedding.engine.plugins.activity.ActivityPluginBinding;
@@ -123,11 +128,13 @@ public class DigimazePdfReaderLauncherPlugin implements FlutterPlugin, MethodCal
             return;
         }
 
-        //JSONObject configurations = new JSONObject(configurationsMap != null ? configurationsMap : new HashMap<>());
+        HashMap<String, Object> configurationsMap = call.argument("configurations");
+        JSONObject configurations = new JSONObject(configurationsMap != null ? configurationsMap : new HashMap<>());
 
         Intent intent = new Intent(activity, PDFReaderActivity.class);
         Bundle bundle = new Bundle();
         bundle.putSerializable("params", params);
+        bundle.putString("configurations", configurations.toString());
         intent.putExtras(bundle);
 
         activity.startActivity(intent);
