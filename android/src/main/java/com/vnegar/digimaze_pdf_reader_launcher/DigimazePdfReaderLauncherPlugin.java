@@ -12,6 +12,8 @@ import androidx.annotation.NonNull;
 import androidx.core.content.FileProvider;
 import com.foxit.sdk.common.Constants;
 import com.foxit.sdk.common.Library;
+import com.vnegar.digimaze_pdf_reader_launcher.models.PDFParams;
+import com.vnegar.digimaze_pdf_reader_launcher.services.ParamDecryptor;
 
 import org.json.JSONObject;
 

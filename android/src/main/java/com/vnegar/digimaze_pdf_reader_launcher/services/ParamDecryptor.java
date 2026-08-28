@@ -1,4 +1,6 @@
-package com.vnegar.digimaze_pdf_reader_launcher;
+package com.vnegar.digimaze_pdf_reader_launcher.services;
+
+import com.vnegar.digimaze_pdf_reader_launcher.models.PDFParams;
 
 import org.json.JSONException;
 import org.json.JSONObject;

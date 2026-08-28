@@ -1,1 +1,2 @@
--keep class com.vnegar.digimaze_pdf_reader_launcher.NativeParamDecryptor { *; }
+-keep class com.vnegar.digimaze_pdf_reader_launcher.services.NativeParamDecryptor { *; }
+-keep class com.vnegar.digimaze_pdf_reader_launcher.services.NativePositionObfuscator { *; }

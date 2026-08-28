@@ -1,4 +1,4 @@
-package com.vnegar.digimaze_pdf_reader_launcher;
+package com.vnegar.digimaze_pdf_reader_launcher.models;
 
 import java.io.Serial;
 import java.io.Serializable;

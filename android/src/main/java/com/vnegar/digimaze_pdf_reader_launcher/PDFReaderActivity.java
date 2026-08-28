@@ -31,6 +31,8 @@ import com.foxit.uiextensions.controls.propertybar.IViewSettingsWindow;
 import com.foxit.uiextensions.controls.toolbar.ToolbarItemConfig;
 import com.foxit.uiextensions.controls.toolbar.BaseBar;
 import com.foxit.uiextensions.controls.toolbar.IBarsHandler;
+import com.vnegar.digimaze_pdf_reader_launcher.models.PDFParams;
+import com.vnegar.digimaze_pdf_reader_launcher.services.PositionObfuscator;
 
 public class PDFReaderActivity extends FragmentActivity {
     private static final String TAG = "PDFReaderActivity";

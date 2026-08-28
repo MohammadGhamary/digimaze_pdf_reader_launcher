@@ -39,13 +39,6 @@ val downloadAarFiles by tasks.registering {
         aarFilesToDownload.forEach { (fileName, url) ->
             val target = File(libsDir, fileName)
 
-            if (url.contains("example.com")) {
-                throw GradleException(
-                    "You forgot to set a real download URL for '$fileName' in build.gradle.kts " +
-                            "(aarFilesToDownload map still points to example.com)."
-                )
-            }
-
             if (!target.exists()) {
                 println("Downloading $fileName ...")
                 val tmp = File(libsDir, "$fileName.tmp")

@@ -3,41 +3,40 @@
 #include "param_decryptor.h"
 
 namespace {
-
-std::string jsonEscape(const std::string& in) {
-    std::string out;
-    out.reserve(in.size() + 8);
-    for (char c : in) {
-        switch (c) {
-            case '"':  out += "\\\""; break;
-            case '\\': out += "\\\\"; break;
-            case '\n': out += "\\n";  break;
-            case '\r': out += "\\r";  break;
-            case '\t': out += "\\t";  break;
-            default:   out += c;      break;
+    std::string jsonEscape(const std::string& in) {
+        std::string out;
+        out.reserve(in.size() + 8);
+        for (char c : in) {
+            switch (c) {
+                case '"':  out += "\\\""; break;
+                case '\\': out += "\\\\"; break;
+                case '\n': out += "\\n";  break;
+                case '\r': out += "\\r";  break;
+                case '\t': out += "\\t";  break;
+                default:   out += c;      break;
+            }
         }
+        return out;
     }
-    return out;
-}
 
-std::string toJson(const paramdecryptor::PDFParamsNative& p) {
-    std::string json = "{";
-    json += "\"type\":\"" + jsonEscape(p.type) + "\",";
-    json += "\"bookId\":\"" + jsonEscape(p.bookId) + "\",";
-    json += "\"title\":\"" + jsonEscape(p.title) + "\",";
-    json += "\"filePath\":\"" + jsonEscape(p.filePath) + "\",";
-    json += "\"licSn\":\"" + jsonEscape(p.licSn) + "\",";
-    json += "\"licKey\":\"" + jsonEscape(p.licKey) + "\",";
-    json += "\"password\":\"" + jsonEscape(p.password) + "\",";
-    json += "\"obfuscationKey\":\"" + jsonEscape(p.obfuscationKey) + "\"";
-    json += "}";
-    return json;
-}
+    std::string toJson(const paramdecryptor::PDFParamsNative& p) {
+        std::string json = "{";
+        json += R"("type":")" + jsonEscape(p.type) + "\",";
+        json += R"("bookId":")" + jsonEscape(p.bookId) + "\",";
+        json += R"("title":")" + jsonEscape(p.title) + "\",";
+        json += R"("filePath":")" + jsonEscape(p.filePath) + "\",";
+        json += R"("licSn":")" + jsonEscape(p.licSn) + "\",";
+        json += R"("licKey":")" + jsonEscape(p.licKey) + "\",";
+        json += R"("password":")" + jsonEscape(p.password) + "\",";
+        json += R"("obfuscationKey":")" + jsonEscape(p.obfuscationKey) + "\"";
+        json += '}';
+        return json;
+    }
 
 } // namespace
 
 extern "C" JNIEXPORT jstring JNICALL
-Java_com_vnegar_digimaze_1pdf_1reader_1launcher_NativeParamDecryptor_decryptClassicPdfReaderParams(
+Java_com_vnegar_digimaze_1pdf_1reader_1launcher_services_NativeParamDecryptor_decryptClassicPdfReaderParams(
         JNIEnv* env, jclass /* clazz */, jstring paramsJ) {
 
     if (paramsJ == nullptr) {

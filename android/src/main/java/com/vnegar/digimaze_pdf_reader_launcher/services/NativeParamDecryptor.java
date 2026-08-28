@@ -1,4 +1,4 @@
-package com.vnegar.digimaze_pdf_reader_launcher;
+package com.vnegar.digimaze_pdf_reader_launcher.services;
 
 final class NativeParamDecryptor {
 

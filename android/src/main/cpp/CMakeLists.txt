@@ -32,6 +32,8 @@ add_library(
         jni_bridge.cpp
         param_decryptor.cpp
         crypto_provider.cpp
+        position_obfuscator.cpp
+        position_obfuscator_jni.cpp
 )
 
 target_compile_features(paramdecryptor PRIVATE cxx_std_17)
