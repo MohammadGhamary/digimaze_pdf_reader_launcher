@@ -31,6 +31,14 @@ class DigimazePdfReaderLauncherAndroid
       switch (request.pdfReaderType) {
         case PdfReaderType.advanced:
           {
+            methodChannel.setMethodCallHandler((call) async {
+              if (call.method == "documentClosed") {
+                if (request.onDocumentClosed != null) {
+                  await request.onDocumentClosed!();
+                }
+              }
+            });
+
             final String targetPath = await methodChannel.invokeMethod(
               'getFileContentUri',
               {"path": request.pdfSource.filePath},
@@ -66,10 +74,6 @@ class DigimazePdfReaderLauncherAndroid
               });
             }
           }
-      }
-
-      if (request.onDocumentClosed != null) {
-        await request.onDocumentClosed!();
       }
     } catch (e) {
       debugPrint("Windows Advanced Process Error: $e");

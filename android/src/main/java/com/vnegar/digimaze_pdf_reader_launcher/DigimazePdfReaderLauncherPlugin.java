@@ -64,31 +64,10 @@ public class DigimazePdfReaderLauncherPlugin implements FlutterPlugin, MethodCal
                 initialize(call, result);
                 break;
             case "openDocumentWithClassicPdfReader":
-                openDocument(call, result);
+                openDocumentWithClassicPdfReader(call, result);
                 break;
             case "openDocumentWithAdvancedPdfReader": {
-                String params = call.argument("params");
-                String path = call.argument("path");
-
-                if (params == null || path == null) {
-                    result.error("INVALID_ARGUMENT", "Parameters cannot be null", null);
-                    return;
-                }
-
-                Intent intent = new Intent();
-                intent.setAction("com.vnegar.digimaze.OPEN_BOOK");
-                intent.setDataAndType(Uri.parse(path), "application/pdf");
-                intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-                intent.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
-                intent.putExtra("params", params);
-
-                try {
-                    isAdvancedPdfReaderOpened = true;
-                    activity.startActivity(intent);
-                    result.success(null);
-                } catch (Exception e) {
-                    result.error("INTENT_ERROR", e.getMessage(), null);
-                }
+                openDocumentWithAdvancedPdfReader(call, result);
                 break;
             }
             default:
@@ -133,7 +112,7 @@ public class DigimazePdfReaderLauncherPlugin implements FlutterPlugin, MethodCal
         result.success(errorCode);
     }
 
-    private void openDocument(MethodCall call, Result result) {
+    private void openDocumentWithClassicPdfReader(MethodCall call, Result result) {
 
         PDFParams params = ParamDecryptor.decryptClassicPdfReaderParams(call.argument("params"));
 
@@ -152,7 +131,34 @@ public class DigimazePdfReaderLauncherPlugin implements FlutterPlugin, MethodCal
         intent.putExtras(bundle);
 
         activity.startActivity(intent);
+
+        isClaasicPdfReaderOpened = true;
         result.success(true);
+    }
+
+    private void openDocumentWithAdvancedPdfReader(MethodCall call, Result result) {
+        String params = call.argument("params");
+        String path = call.argument("path");
+
+        if (params == null || path == null) {
+            result.error("INVALID_ARGUMENT", "Parameters cannot be null", null);
+            return;
+        }
+
+        Intent intent = new Intent();
+        intent.setAction("com.vnegar.digimaze.OPEN_BOOK");
+        intent.setDataAndType(Uri.parse(path), "application/pdf");
+        intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+        intent.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
+        intent.putExtra("params", params);
+
+        try {
+            isAdvancedPdfReaderOpened = true;
+            activity.startActivity(intent);
+            result.success(null);
+        } catch (Exception e) {
+            result.error("INTENT_ERROR", e.getMessage(), null);
+        }
     }
 
     private void registerActivityLifecycleCallbacks() {

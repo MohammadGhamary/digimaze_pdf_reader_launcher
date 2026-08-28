@@ -137,11 +137,10 @@ public class PDFReaderActivity extends FragmentActivity {
         }
 
         PDFParams params = (PDFParams) getIntent().getSerializableExtra("params");
-
-        //PositionObfuscator obfuscator = new PositionObfuscator(decryptedObfuscatorKey, /* base64EncodeOutput = */ true);
-
         assert params != null;
-        uiextensionsManager.openDocument(params.getFilePath(), params.getPassword().getBytes());
+
+        PositionObfuscator obfuscator = new PositionObfuscator(params.getObfuscationKey(), /* base64EncodeOutput = */ true);
+        uiextensionsManager.openDocument(params.getFilePath(), obfuscator.deobfuscate(params.getPassword()).getBytes());
     }
 
     @Override

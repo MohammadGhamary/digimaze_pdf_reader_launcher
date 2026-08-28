@@ -53,7 +53,7 @@ class _MyAppState extends State<MyApp> {
             bookId: 1029,
             attachmentId: "685d8f2d79587b2eb81357ef",
             title: "بانک کنکور ریاضی دوازدهم (فصل۱: تابع)",
-            filePath: "/data/user/0/com.vnegar.digimaze/app_flutter/attachment_1029_685d8f2d79587b2eb81357ef.pdf",
+            filePath: "C:\\Users\\Mohammad\\AppData\\Roaming\\com.vnegar\\digimaze\\attachment_1029_685d8f2d79587b2eb81357ef.pdf",
             password: "KWxqQZaw%&6c^7tbkJ\$&mgFBdcjNN!v8",
           ),
         ),

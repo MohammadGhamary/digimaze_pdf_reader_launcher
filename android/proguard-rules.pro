@@ -1,0 +1,1 @@
+-keep class com.vnegar.digimaze_pdf_reader_launcher.NativeParamDecryptor { *; }

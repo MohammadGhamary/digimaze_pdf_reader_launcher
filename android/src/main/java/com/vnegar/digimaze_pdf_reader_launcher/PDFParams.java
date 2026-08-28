@@ -19,6 +19,7 @@ public class PDFParams implements Serializable {
     private String licSn;
     private String licKey;
     private String password;
+    private String obfuscationKey;
 
     public String getDeviceUID() {
         return deviceUID;
@@ -114,5 +115,13 @@ public class PDFParams implements Serializable {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public String getObfuscationKey() {
+        return obfuscationKey;
+    }
+
+    public void setObfuscationKey(String obfuscationKey) {
+        this.obfuscationKey = obfuscationKey;
     }
 }
