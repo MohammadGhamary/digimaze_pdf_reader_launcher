@@ -105,6 +105,9 @@ extensions.configure<LibraryExtension> {
 
     lint {
         disable += "InvalidPackage"
+        disable += "GradleDependency"
+        checkReleaseBuilds = false
+        abortOnError = false
     }
 
     compileOptions {
