@@ -15,53 +15,10 @@ rootProject.allprojects {
         google()
         mavenCentral()
         maven {
-            url = uri("https://pkgs.dev.azure.com/MicrosoftDeviceSDK/DuoSDK-Public/_packaging/Duo-SDK-Feed/maven/v1")
+            url =
+                uri("https://pkgs.dev.azure.com/MicrosoftDeviceSDK/DuoSDK-Public/_packaging/Duo-SDK-Feed/maven/v1")
         }
     }
-}
-
-val libsDir = file("$projectDir/libs")
-
-val aarFilesToDownload = mapOf(
-    "FoxitRDK.aar" to "https://files.digimaze.org/FoxitRDK.aar",
-    "FoxitRDKUIExtensions.aar" to "https://files.digimaze.org/FoxitRDKUIExtensions.aar"
-)
-
-val downloadAarFiles by tasks.registering {
-    doLast {
-        libsDir.mkdirs()
-        aarFilesToDownload.forEach { (fileName, url) ->
-            val target = File(libsDir, fileName)
-
-            if (!target.exists()) {
-                println("Downloading $fileName ...")
-                val tmp = File(libsDir, "$fileName.tmp")
-                URL(url).openStream().use { input ->
-                    tmp.outputStream().use { output ->
-                        input.copyTo(output)
-                    }
-                }
-
-                val header = tmp.inputStream().use { it.readNBytes(2) }
-                if (tmp.length() < 1024 || header.size < 2 || header[0] != 'P'.code.toByte() || header[1] != 'K'.code.toByte()) {
-                    tmp.delete()
-                    throw GradleException(
-                        "Downloaded '$fileName' does not look like a valid .aar file " +
-                                "(too small or not a zip archive). Check the URL is correct and publicly reachable: $url"
-                    )
-                }
-
-                tmp.renameTo(target)
-                println("Downloaded $fileName (${target.length() / 1024 / 1024} MB)")
-            } else {
-                println("$fileName already exists, skipping download.")
-            }
-        }
-    }
-}
-
-tasks.named("preBuild") {
-    dependsOn(downloadAarFiles)
 }
 
 extensions.configure<LibraryExtension> {
