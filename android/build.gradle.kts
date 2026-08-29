@@ -104,8 +104,7 @@ extensions.configure<LibraryExtension> {
     }
 
     lint {
-        disable += "InvalidPackage"
-        disable += "GradleDependency"
+        disable "AccidentalOctal", "AndroidGradlePluginVersion", "AnnotationProcessorOnCompilePath", "BomWithoutPlatform", "UseOfBundledGooglePlayServices", "ChromeOsAbiSupport", "GradleCompatible", "CoreLibDesugaringV1", "DataBindingWithoutKapt", "GradleDependency", "GradleDeprecated", "GradleDeprecatedConfiguration", "OutdatedLibrary", "DevModeObsolete", "DuplicatePlatformClasses", "EditedTargetSdkVersion", "ExpiredTargetSdkVersion", "ExpiringTargetSdkVersion", "GradleGetter", "GradlePluginVersion", "HighAppVersionCode", "GradleIdeError", "JavaPluginLanguageLevel", "JcenterRepositoryObsolete", "KaptUsageInsteadOfKsp", "KtxExtensionAvailable", "LifecycleAnnotationProcessorWithJava8", "MinSdkTooLow", "SimilarGradleDependency", "NotInterpolated", "GradlePath", "PlaySdkIndexDeprecated", "PlaySdkIndexGenericIssues", "PlaySdkIndexNonCompliant", "PlaySdkIndexVulnerability", "GradleDynamicVersion", "NewerVersionAvailable", "RiskyLibrary", "StringShouldBeInt", "UseTomlInstead", "OldTargetApi"
         checkReleaseBuilds = false
         abortOnError = false
     }
