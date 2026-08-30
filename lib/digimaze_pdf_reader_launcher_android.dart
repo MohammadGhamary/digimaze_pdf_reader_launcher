@@ -42,6 +42,7 @@ class DigimazePdfReaderLauncherAndroid
         "cloud": true,
         "polyline": true,
         "measure": true,
+        "video": false,
         "image": true,
         "audio": true,
         "redaction": true,
