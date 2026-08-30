@@ -197,13 +197,6 @@ public class PDFReaderActivity extends FragmentActivity {
 
     @Override
     protected void onDestroy() {
-        if (pdfViewCtrl != null) {
-            try {
-                pdfViewCtrl.closeDoc();
-            } catch (Exception e) {
-                Log.e(TAG, "Error closing document", e);
-            }
-        }
         if (uiextensionsManager != null) {
             uiextensionsManager.onDestroy(this);
         }
