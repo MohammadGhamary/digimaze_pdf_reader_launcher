@@ -34,8 +34,10 @@ public class DigimazePdfReaderLauncherPlugin implements FlutterPlugin, MethodCal
     private Activity activity;
     private int errorCode = Constants.e_ErrUnknown;
 
-    private boolean isClaasicPdfReaderOpened = false;
+    private boolean isClassicPdfReaderOpened = false;
     private boolean isAdvancedPdfReaderOpened = false;
+
+    private Application.ActivityLifecycleCallbacks lifecycleCallbacks;
 
     @Override
     public void onAttachedToEngine(@NonNull FlutterPluginBinding flutterPluginBinding) {
@@ -120,11 +122,15 @@ public class DigimazePdfReaderLauncherPlugin implements FlutterPlugin, MethodCal
     }
 
     private void openDocumentWithClassicPdfReader(MethodCall call, Result result) {
+        if (isClassicPdfReaderOpened) {
+            result.error("READER_ALREADY_OPEN", "A PDF reader instance is already open", null);
+            return;
+        }
 
         PDFParams params = ParamDecryptor.decryptClassicPdfReaderParams(call.argument("params"));
 
         assert params != null;
-        errorCode = Library.initialize(params.getLicSn(), params.getLicKey());
+        errorCode = Library.initialize(params.getX1(), params.getX2());
         if (errorCode != Constants.e_ErrSuccess) {
             result.error("" + errorCode, "Failed to initialize Foxit Library", errorCode);
             return;
@@ -139,9 +145,8 @@ public class DigimazePdfReaderLauncherPlugin implements FlutterPlugin, MethodCal
         bundle.putString("configurations", configurations.toString());
         intent.putExtras(bundle);
 
+        isClassicPdfReaderOpened = true;
         activity.startActivity(intent);
-
-        isClaasicPdfReaderOpened = true;
         result.success(true);
     }
 
@@ -171,14 +176,18 @@ public class DigimazePdfReaderLauncherPlugin implements FlutterPlugin, MethodCal
     }
 
     private void registerActivityLifecycleCallbacks() {
-        activity.getApplication().registerActivityLifecycleCallbacks(new Application.ActivityLifecycleCallbacks() {
+        if (lifecycleCallbacks != null) {
+            return;
+        }
+
+        lifecycleCallbacks = new Application.ActivityLifecycleCallbacks() {
             @Override
             public void onActivityDestroyed(@NonNull Activity activity) {
                 if (activity.getClass().getName().equals("com.vnegar.digimaze_pdf_reader_launcher.PDFReaderActivity")) {
+                    isClassicPdfReaderOpened = false;
                     new Handler(Looper.getMainLooper()).post(() -> {
                         channel.invokeMethod("documentClosed", null);
                     });
-
                 }
             }
 
@@ -209,6 +218,8 @@ public class DigimazePdfReaderLauncherPlugin implements FlutterPlugin, MethodCal
             @Override
             public void onActivitySaveInstanceState(@NonNull Activity activity, @NonNull Bundle bundle) {
             }
-        });
+        };
+
+        activity.getApplication().registerActivityLifecycleCallbacks(lifecycleCallbacks);
     }
 }

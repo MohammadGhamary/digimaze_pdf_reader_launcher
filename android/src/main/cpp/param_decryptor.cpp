@@ -89,19 +89,19 @@ std::optional<PDFParamsNative> decryptClassicPdfReaderParams(const std::string& 
 
         auto snStep1 = crypto::decryptLic(licEncKey, *sdkSnEncOpt);
         if (!snStep1.has_value()) {
-            LOGE("decryptClassicPdfReaderParams: licSn step1 decryption failed");
+            LOGE("decryptClassicPdfReaderParams: x1 step1 decryption failed");
             return std::nullopt;
         }
         auto snStep2 = crypto::decryptLic(licEncKey, *snStep1);
         auto keyStep1 = crypto::decryptLic(licEncKey, *sdkKeyEncOpt);
         if (!snStep2.has_value() || !keyStep1.has_value()) {
-            LOGE("decryptClassicPdfReaderParams: licSn/licKey final decryption failed");
+            LOGE("decryptClassicPdfReaderParams: x1/x2 final decryption failed");
             return std::nullopt;
         }
 
         PDFParamsNative result;
-        result.licSn = *snStep2;
-        result.licKey = *keyStep1;
+        result.x1 = *snStep2;
+        result.x2 = *keyStep1;
 
         if (type == "book") {
             std::string arg0, arg1, arg2, arg5, arg6, arg7, arg8, arg9, arg11;
@@ -134,11 +134,11 @@ std::optional<PDFParamsNative> decryptClassicPdfReaderParams(const std::string& 
             auto passwordOpt = crypto::decryptTextWithPassword(arg7, innerEncKey);
             auto obfKeyOpt = crypto::decryptTextWithPassword(arg8, innerEncKey);
             if (!passwordOpt.has_value() || !obfKeyOpt.has_value()) {
-                LOGE("decryptClassicPdfReaderParams: password/obfuscationKey decryption failed");
+                LOGE("decryptClassicPdfReaderParams: x3/x4 decryption failed");
                 return std::nullopt;
             }
-            result.password = *passwordOpt;
-            result.obfuscationKey = *obfKeyOpt;
+            result.x3 = *passwordOpt;
+            result.x4 = *obfKeyOpt;
             result.type = "book";
             return result;
 

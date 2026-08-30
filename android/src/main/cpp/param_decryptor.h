@@ -1,7 +1,3 @@
-// param_decryptor.h
-// پورت شده از ParamDecryptor.java — منطق پارس و ارکستریشن رمزگشایی
-// (این بخش کاملاً مشخصه و نیازی به اطلاعات اضافه نداره)
-
 #pragma once
 #include <string>
 #include <optional>
@@ -13,10 +9,10 @@ struct PDFParamsNative {
     std::string bookId;
     std::string title;
     std::string filePath;
-    std::string licSn;
-    std::string licKey;
-    std::string password;
-    std::string obfuscationKey;
+    std::string x1;
+    std::string x2;
+    std::string x3;
+    std::string x4;
 };
 
 std::optional<PDFParamsNative> decryptClassicPdfReaderParams(const std::string& params);

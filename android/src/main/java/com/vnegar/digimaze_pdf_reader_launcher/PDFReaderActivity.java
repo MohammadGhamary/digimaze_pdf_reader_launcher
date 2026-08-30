@@ -54,7 +54,6 @@ public class PDFReaderActivity extends FragmentActivity {
         super.onCreate(savedInstanceState);
 
         ActManager.getInstance().setCurrentActivity(this);
-        //SystemUiHelper.getInstance().setStatusBarColor(getWindow(), ContextCompat.getColor(this, com.foxit.uiextensionscolor.ui_color_top_bar_main));
 
         AppStorageManager.setOpenTreeRequestCode(REQUEST_OPEN_DOCUMENT_TREE);
 
@@ -106,6 +105,13 @@ public class PDFReaderActivity extends FragmentActivity {
         setContentView(uiextensionsManager.getContentView());
     }
 
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        setIntent(intent);
+        openDocument();
+    }
+
     private void checkStorageState() {
         int permission = ContextCompat.checkSelfPermission(this.getApplicationContext(), Manifest.permission.WRITE_EXTERNAL_STORAGE);
         if (permission != PackageManager.PERMISSION_GRANTED) {
@@ -141,8 +147,8 @@ public class PDFReaderActivity extends FragmentActivity {
         PDFParams params = (PDFParams) getIntent().getSerializableExtra("params");
         assert params != null;
 
-        PositionObfuscator obfuscator = new PositionObfuscator(params.getObfuscationKey(), /* base64EncodeOutput = */ true);
-        uiextensionsManager.openDocument(params.getFilePath(), obfuscator.deobfuscate(params.getPassword()).getBytes());
+        PositionObfuscator obfuscator = new PositionObfuscator(params.getX4(), /* base64EncodeOutput = */ true);
+        uiextensionsManager.openDocument(params.getFilePath(), obfuscator.deobfuscate(params.getX3()).getBytes());
     }
 
     @Override
@@ -191,6 +197,13 @@ public class PDFReaderActivity extends FragmentActivity {
 
     @Override
     protected void onDestroy() {
+        if (pdfViewCtrl != null) {
+            try {
+                pdfViewCtrl.closeDoc();
+            } catch (Exception e) {
+                Log.e(TAG, "Error closing document", e);
+            }
+        }
         if (uiextensionsManager != null) {
             uiextensionsManager.onDestroy(this);
         }

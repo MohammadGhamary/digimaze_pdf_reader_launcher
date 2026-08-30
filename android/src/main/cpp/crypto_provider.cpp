@@ -36,7 +36,7 @@ bool pbkdf2HmacSha256(const std::string& password,
     uint32_t numBlocks = (dkLen + hLen - 1) / hLen;
 
     for (uint32_t blockIndex = 1; blockIndex <= numBlocks; ++blockIndex) {
-        // U1 = HMAC(password, salt || INT32_BE(blockIndex))
+        // U1 = HMAC(x3, salt || INT32_BE(blockIndex))
         std::vector<uint8_t> saltPlusIndex(salt.begin(), salt.end());
         saltPlusIndex.push_back(static_cast<uint8_t>((blockIndex >> 24) & 0xFF));
         saltPlusIndex.push_back(static_cast<uint8_t>((blockIndex >> 16) & 0xFF));

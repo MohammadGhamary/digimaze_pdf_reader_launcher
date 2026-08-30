@@ -25,10 +25,10 @@ namespace {
         json += R"("bookId":")" + jsonEscape(p.bookId) + "\",";
         json += R"("title":")" + jsonEscape(p.title) + "\",";
         json += R"("filePath":")" + jsonEscape(p.filePath) + "\",";
-        json += R"("licSn":")" + jsonEscape(p.licSn) + "\",";
-        json += R"("licKey":")" + jsonEscape(p.licKey) + "\",";
-        json += R"("password":")" + jsonEscape(p.password) + "\",";
-        json += R"("obfuscationKey":")" + jsonEscape(p.obfuscationKey) + "\"";
+        json += R"("x1":")" + jsonEscape(p.x1) + "\",";
+        json += R"("x2":")" + jsonEscape(p.x2) + "\",";
+        json += R"("x3":")" + jsonEscape(p.x3) + "\",";
+        json += R"("x4":")" + jsonEscape(p.x4) + "\"";
         json += '}';
         return json;
     }

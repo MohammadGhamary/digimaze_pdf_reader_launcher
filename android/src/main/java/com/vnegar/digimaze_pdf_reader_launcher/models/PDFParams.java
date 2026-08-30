@@ -16,10 +16,10 @@ public class PDFParams implements Serializable {
     private String type;
     private String filePath;
     private String title;
-    private String licSn;
-    private String licKey;
-    private String password;
-    private String obfuscationKey;
+    private String x1;
+    private String x2;
+    private String x3;
+    private String x4;
 
     public String getDeviceUID() {
         return deviceUID;
@@ -93,35 +93,35 @@ public class PDFParams implements Serializable {
         this.title = title;
     }
 
-    public String getLicSn() {
-        return licSn;
+    public String getX1() {
+        return x1;
     }
 
-    public void setLicSn(String licSn) {
-        this.licSn = licSn;
+    public void setX1(String x1) {
+        this.x1 = x1;
     }
 
-    public String getLicKey() {
-        return licKey;
+    public String getX2() {
+        return x2;
     }
 
-    public void setLicKey(String licKey) {
-        this.licKey = licKey;
+    public void setX2(String x2) {
+        this.x2 = x2;
     }
 
-    public String getPassword() {
-        return password;
+    public String getX3() {
+        return x3;
     }
 
-    public void setPassword(String password) {
-        this.password = password;
+    public void setX3(String x3) {
+        this.x3 = x3;
     }
 
-    public String getObfuscationKey() {
-        return obfuscationKey;
+    public String getX4() {
+        return x4;
     }
 
-    public void setObfuscationKey(String obfuscationKey) {
-        this.obfuscationKey = obfuscationKey;
+    public void setX4(String x4) {
+        this.x4 = x4;
     }
 }

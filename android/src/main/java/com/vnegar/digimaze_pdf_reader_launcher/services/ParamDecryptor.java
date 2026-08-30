@@ -22,10 +22,10 @@ public class ParamDecryptor {
             result.setBookId(obj.getString("bookId"));
             result.setTitle(obj.getString("title"));
             result.setFilePath(obj.getString("filePath"));
-            result.setLicSn(obj.getString("licSn"));
-            result.setLicKey(obj.getString("licKey"));
-            result.setPassword(obj.optString("password", null));
-            result.setObfuscationKey(obj.optString("obfuscationKey", null));
+            result.setX1(obj.getString("x1"));
+            result.setX2(obj.getString("x2"));
+            result.setX3(obj.optString("x3", null));
+            result.setX4(obj.optString("x4", null));
 
             return result;
 
