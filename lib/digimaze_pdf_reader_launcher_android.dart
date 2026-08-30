@@ -18,7 +18,7 @@ class DigimazePdfReaderLauncherAndroid
 
   final _classicPdfReaderConfigurations = {
     "modules": {
-      "readingbookmark": true,
+      "readingbookmark": false,
       "outline": true,
       "annotations": {
         "highlight": true,

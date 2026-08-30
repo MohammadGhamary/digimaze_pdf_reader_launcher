@@ -201,6 +201,8 @@ public class PDFReaderActivity extends FragmentActivity {
             uiextensionsManager.onDestroy(this);
         }
         super.onDestroy();
+        System.gc();
+        System.runFinalization();
     }
 
     @SuppressLint("WrongConstant")
