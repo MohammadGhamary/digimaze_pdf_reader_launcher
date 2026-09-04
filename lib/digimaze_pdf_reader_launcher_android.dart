@@ -55,7 +55,7 @@ class DigimazePdfReaderLauncherAndroid
       "navigation": true,
       "form": false,
       "selection": true,
-      "encryption": true,
+      "encryption": false,
       "multipleSelection": true,
     },
     "permissions": {
