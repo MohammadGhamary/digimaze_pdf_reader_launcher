@@ -77,6 +77,7 @@ public class PDFReaderActivity extends FragmentActivity {
         if (uiextensionsManager.getMainFrame() != null) {
             uiextensionsManager.getMainFrame().removeTab(ToolbarItemConfig.ITEM_FORM_TAB);
             uiextensionsManager.getMainFrame().removeTab(ToolbarItemConfig.ITEM_FILLSIGN_TAB);
+            uiextensionsManager.getMainFrame().removeTab(ToolbarItemConfig.ITEM_PROTECT_TAB);
         }
         if (uiextensionsManager.getBarManager() != null) {
             uiextensionsManager.getBarManager().removeItem(IBarsHandler.BarName.TOP_BAR, BaseBar.TB_Position.Position_RB, 1);
