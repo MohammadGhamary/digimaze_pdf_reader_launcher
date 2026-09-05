@@ -45,7 +45,7 @@ class DigimazePdfReaderLauncherAndroid
         "video": false,
         "image": true,
         "audio": true,
-        "redaction": true,
+        "redaction": false,
       },
       "thumbnail": false,
       "attachment": true,
