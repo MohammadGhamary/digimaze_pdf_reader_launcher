@@ -55,7 +55,7 @@ class DigimazePdfReaderLauncherAndroid
       "navigation": true,
       "form": false,
       "selection": true,
-      "encryption": false,
+      "encryption": true,
       "multipleSelection": true,
     },
     "permissions": {
@@ -149,13 +149,7 @@ class DigimazePdfReaderLauncherAndroid
           "scaleToUnit": "inch",
           "scaleFromValue": 1,
           "scaleToValue": 1,
-        },
-        "redaction": {
-          "fillColor": "#000000",
-          "textColor": "#ff0000",
-          "textFace": "Courier",
-          "textSize": 12,
-        },
+        }
       },
       "form": {
         "textField": {
