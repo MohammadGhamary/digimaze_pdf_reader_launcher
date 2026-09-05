@@ -79,25 +79,6 @@ public class PDFReaderActivity extends FragmentActivity {
             uiextensionsManager.getMainFrame().removeTab(ToolbarItemConfig.ITEM_FILLSIGN_TAB);
             uiextensionsManager.getMainFrame().removeTab(ToolbarItemConfig.ITEM_PROTECT_TAB);
         }
-
-        IMenuView menuView = mUiExtensionsManager.getMenuView();
-        if(menuView != null){
-            IMenuGroup menuGroup = menuView.getGroup(MoreMenuConstants.GROUP_ACTION_MENU_SECONDARY);
-            if(menuView != null){
-                IMenuItem menuItem = menuGroup.getItem(MoreMenuConstants.ITEM_SECONDARY_PRINT);
-                if(menuItem != null){
-                    menuItem.setVisible(false);
-                }
-            }
-
-            menuGroup = menuView.getGroup(MoreMenuConstants.GROUP_ACTION_MENU_PRIMARY);
-            if(menuView != null){
-                IMenuItem menuItem = menuGroup.getItem(MoreMenuConstants.ITEM_PRIMARY_PROTECT);
-                if(menuItem != null){
-                    menuItem.setVisible(false);
-                }
-            }
-        }
         
         if (uiextensionsManager.getBarManager() != null) {
             uiextensionsManager.getBarManager().removeItem(IBarsHandler.BarName.TOP_BAR, BaseBar.TB_Position.Position_RB, 1);
