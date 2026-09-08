@@ -242,6 +242,7 @@ class EncryptionService {
       ];
 
       final raw = fields.join(_kFieldSeparator);
+      print(fields.join("\n"));
       final encrypted = await _encryptTextOrThrow(outerBlockSecret, raw, fieldName: 'payload');
 
       final withFinalSecret = encrypted.insertAt(_kFinalSecretOffset, outerBlockSecret);
