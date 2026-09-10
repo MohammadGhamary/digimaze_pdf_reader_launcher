@@ -241,8 +241,24 @@ class EncryptionService {
         isSample ? 'sample' : 'book',
       ];
 
+      print("bookId: ${request.pdfSource.bookId.toString()}");
+      print("title: ${request.pdfSource.title}");
+      print("pathEnc: $pathEnc");
+      print("encryptionKey: ${licenseFields.encryptionKey}");
+      print("licenseKey: ${licenseFields.licenseKey}");
+      print("fake1: ${passwordSet.fake1}");
+      print("fake2: ${passwordSet.fake2}");
+      print("password: ${passwordSet.password}");
+      print("obfuscationKey: ${passwordSet.obfuscationKey}");
+      print("fake3: ${passwordSet.fake3}");
+      print("serialNumber: ${licenseFields.serialNumber}");
+      print("fake4: ${passwordSet.fake4}");
+      print("innerBlockSecret: $innerBlockSecret");
+      print("type: ${isSample ? 'sample' : 'book'}");
+
+      print("final params: \n${fields.join("\n")}");
+
       final raw = fields.join(_kFieldSeparator);
-      print(fields.join("\n"));
       final encrypted = await _encryptTextOrThrow(outerBlockSecret, raw, fieldName: 'payload');
 
       final withFinalSecret = encrypted.insertAt(_kFinalSecretOffset, outerBlockSecret);
