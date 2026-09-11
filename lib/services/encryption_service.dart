@@ -211,7 +211,7 @@ class EncryptionService {
 
       final innerBlockSecret = _generateBase64Key();
 
-      final passwordSetTask = _buildObfuscatedPasswordSet(innerBlockSecret, password ?? 'sample', useStaticPass: false);
+      final passwordSetTask = _buildObfuscatedPasswordSet(innerBlockSecret, password ?? _generateRandomString(32), useStaticPass: false);
       final licenseFieldsTask = _encryptLicenseData(innerBlockSecret, sdkLicense);
 
       final (passwordSet, licenseFields) = await (passwordSetTask, licenseFieldsTask).wait;
@@ -262,6 +262,10 @@ class EncryptionService {
       final encrypted = await _encryptTextOrThrow(outerBlockSecret, raw, fieldName: 'payload');
 
       final withFinalSecret = encrypted.insertAt(_kFinalSecretOffset, outerBlockSecret);
+
+      print("****************************");
+      print(base64.encode(utf8.encode(withFinalSecret)));
+      
       return base64.encode(utf8.encode(withFinalSecret));
 
     }else if(Platform.isWindows){
