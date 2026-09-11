@@ -58,13 +58,11 @@ std::optional<PDFParamsNative> decryptClassicPdfReaderParams(const std::string& 
             LOGE("decryptClassicPdfReaderParams: outer layer decryption failed");
             return std::nullopt;
         }
-        std::string original = *originalOpt;
+        const std::string& original = *originalOpt;
 
         std::vector<std::string> argumentsArray = splitByDelimiter(original, kDelimiterAe);
 
         std::string type = popLast(argumentsArray, "book");
-        bool isSample = (type == "sample");
-        (void)isSample;
 
         // Pop innerEncKey
         std::string innerEncKey = popLast(argumentsArray, "");
@@ -85,7 +83,7 @@ std::optional<PDFParamsNative> decryptClassicPdfReaderParams(const std::string& 
             LOGE("decryptClassicPdfReaderParams: license intermediate key decryption failed");
             return std::nullopt;
         }
-        std::string licEncKey = *licEncKeyOpt;
+        const std::string& licEncKey = *licEncKeyOpt;
 
         auto snStep1 = crypto::decryptLic(licEncKey, *sdkSnEncOpt);
         if (!snStep1.has_value()) {
@@ -122,7 +120,7 @@ std::optional<PDFParamsNative> decryptClassicPdfReaderParams(const std::string& 
                 LOGE("decryptClassicPdfReaderParams: filePath decryption failed");
                 return std::nullopt;
             }
-            std::string pathAndPass = *pathAndPassOpt;
+            const std::string& pathAndPass = *pathAndPassOpt;
             size_t sep = pathAndPass.find("***");
             result.filePath = (sep != std::string::npos) ? pathAndPass.substr(0, sep) : pathAndPass;
 
@@ -149,15 +147,20 @@ std::optional<PDFParamsNative> decryptClassicPdfReaderParams(const std::string& 
                 LOGE("decryptClassicPdfReaderParams: 'sample' arguments array too short");
                 return std::nullopt;
             }
-            auto filePathOpt = crypto::decryptTextWithPassword(arg2, innerEncKey);
-            if (!filePathOpt.has_value()) {
-                LOGE("decryptClassicPdfReaderParams: sample filePath decryption failed");
+
+            auto pathAndPassOpt = crypto::decryptTextWithPassword(arg2, innerEncKey);
+            if (!pathAndPassOpt.has_value()) {
+                LOGE("decryptClassicPdfReaderParams: filePath decryption failed");
                 return std::nullopt;
             }
+            const std::string& pathAndPass = *pathAndPassOpt;
+            size_t sep = pathAndPass.find("***");
+            result.filePath = (sep != std::string::npos) ? pathAndPass.substr(0, sep) : pathAndPass;
+
             result.bookId = arg0;
             result.title = arg1;
-            result.filePath = *filePathOpt;
             result.type = "sample";
+
             return result;
 
         } else {
